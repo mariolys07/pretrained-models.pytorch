@@ -24,7 +24,7 @@ from torch.nn import init
 __all__ = ['xception']
 
 pretrained_settings = {
-    'xception': {
+    'xceptionMacro': {
         'imagenet': {
             'url': 'http://data.lip6.fr/cadene/pretrainedmodels/xception-43020ad28.pth',
             'input_space': 'RGB',
@@ -154,7 +154,7 @@ class BlockCustom1(nn.Module):
         return x
 
 
-class Xception(nn.Module):
+class XceptionMacro(nn.Module):
     """
     Xception optimized for the ImageNet dataset, as specified in
     https://arxiv.org/pdf/1610.02357.pdf
@@ -164,7 +164,7 @@ class Xception(nn.Module):
         Args:
             num_classes: number of classes
         """
-        super(Xception, self).__init__()
+        super(XceptionMacro, self).__init__()
         self.num_classes = num_classes
 
         self.conv1 = nn.Conv2d(3, 32, 3,2, 0, bias=False)
@@ -256,14 +256,14 @@ class Xception(nn.Module):
         return x
 
 
-def xception(num_classes=1000, pretrained='imagenet'):
-    model = Xception(num_classes=num_classes)
+def xceptionMacro(num_classes=1000, pretrained='imagenet'):
+    model = XceptionMacro(num_classes=num_classes)
     if pretrained:
         settings = pretrained_settings['xception'][pretrained]
         assert num_classes == settings['num_classes'], \
             "num_classes should be {}, but is {}".format(settings['num_classes'], num_classes)
 
-        model = Xception(num_classes=num_classes)
+        model = XceptionMacro(num_classes=num_classes)
         model.load_state_dict(model_zoo.load_url(settings['url']))
 
         model.input_space = settings['input_space']

@@ -45,6 +45,7 @@ from .models.dpn import dpn98
 from .models.dpn import dpn131
 from .models.dpn import dpn107
 from .models.xception import xception
+from .models.xception_macroblocks import xceptionMacro
 from .models.senet import senet154
 from .models.senet import se_resnet50
 from .models.senet import se_resnet101

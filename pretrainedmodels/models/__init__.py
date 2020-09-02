@@ -46,6 +46,8 @@ from .dpn import dpn131
 from .dpn import dpn107
 
 from .xception import xception
+from .xception_macroblocks import xceptionMacro
+
 
 from .senet import senet154
 from .senet import se_resnet50
