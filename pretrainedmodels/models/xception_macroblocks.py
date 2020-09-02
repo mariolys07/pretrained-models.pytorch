@@ -105,7 +105,7 @@ class Block(nn.Module):
 
 class BlockCustom1(nn.Module):
     def __init__(self,in_filters,out_filters,reps,strides=1,start_with_relu=True,grow_first=True):
-        super(Block, self).__init__()
+        super(BlockCustom1, self).__init__()
 
         if out_filters != in_filters or strides!=1:
             self.skip = nn.Conv2d(in_filters, out_filters,1,stride=strides, bias=False)
