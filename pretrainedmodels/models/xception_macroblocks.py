@@ -21,7 +21,7 @@ import torch.nn.functional as F
 import torch.utils.model_zoo as model_zoo
 from torch.nn import init
 
-__all__ = ['xception']
+__all__ = ['xceptionMacro']
 
 pretrained_settings = {
     'xceptionMacro': {
@@ -259,7 +259,7 @@ class XceptionMacro(nn.Module):
 def xceptionMacro(num_classes=1000, pretrained='imagenet'):
     model = XceptionMacro(num_classes=num_classes)
     if pretrained:
-        settings = pretrained_settings['xception'][pretrained]
+        settings = pretrained_settings['xceptionMacro'][pretrained]
         assert num_classes == settings['num_classes'], \
             "num_classes should be {}, but is {}".format(settings['num_classes'], num_classes)
 
