@@ -103,55 +103,55 @@ class Block(nn.Module):
         return x
 
 
-class BlockCustom1(nn.Module):
-    def __init__(self,in_filters,out_filters,reps,strides=1,start_with_relu=True,grow_first=True):
-        super(BlockCustom1, self).__init__()
+# class BlockCustom1(nn.Module):
+#     def __init__(self,in_filters,out_filters,reps,strides=1,start_with_relu=True,grow_first=True):
+#         super(BlockCustom1, self).__init__()
 
-        if out_filters != in_filters or strides!=1:
-            self.skip = nn.Conv2d(in_filters, out_filters,1,stride=strides, bias=False)
-            self.skipbn = nn.BatchNorm2d(out_filters)
-        else:
-            self.skip=None
+#         if out_filters != in_filters or strides!=1:
+#             self.skip = nn.Conv2d(in_filters, out_filters,1,stride=strides, bias=False)
+#             self.skipbn = nn.BatchNorm2d(out_filters)
+#         else:
+#             self.skip=None
 
-        rep=[]
+#         rep=[]
 
-        filters=in_filters
-        if grow_first:
-            rep.append(nn.ReLU(inplace=True))
-            rep.append(SeparableConv2d(in_filters,out_filters + 231,3,stride=1,padding=1,bias=False))
-            rep.append(nn.BatchNorm2d(out_filters + 231))
-            filters = out_filters
+#         filters=in_filters
+#         if grow_first:
+#             rep.append(nn.ReLU(inplace=True))
+#             rep.append(SeparableConv2d(in_filters,out_filters + 231,3,stride=1,padding=1,bias=False))
+#             rep.append(nn.BatchNorm2d(out_filters + 231))
+#             filters = out_filters
 
-        for i in range(reps-1):
-            rep.append(nn.ReLU(inplace=True))
-            rep.append(SeparableConv2d(filters,filters,3,stride=1,padding=1,bias=False))
-            rep.append(nn.BatchNorm2d(filters))
+#         for i in range(reps-1):
+#             rep.append(nn.ReLU(inplace=True))
+#             rep.append(SeparableConv2d(filters,filters,3,stride=1,padding=1,bias=False))
+#             rep.append(nn.BatchNorm2d(filters))
 
-        if not grow_first:
-            rep.append(nn.ReLU(inplace=True))
-            rep.append(SeparableConv2d(in_filters,out_filters + 231,3,stride=1,padding=1,bias=False))
-            rep.append(nn.BatchNorm2d(out_filters + 231))
+#         if not grow_first:
+#             rep.append(nn.ReLU(inplace=True))
+#             rep.append(SeparableConv2d(in_filters,out_filters + 231,3,stride=1,padding=1,bias=False))
+#             rep.append(nn.BatchNorm2d(out_filters + 231))
 
-        if not start_with_relu:
-            rep = rep[1:]
-        else:
-            rep[0] = nn.ReLU(inplace=False)
+#         if not start_with_relu:
+#             rep = rep[1:]
+#         else:
+#             rep[0] = nn.ReLU(inplace=False)
 
-        if strides != 1:
-            rep.append(nn.MaxPool2d(3,strides,1))
-        self.rep = nn.Sequential(*rep)
+#         if strides != 1:
+#             rep.append(nn.MaxPool2d(3,strides,1))
+#         self.rep = nn.Sequential(*rep)
 
-    def forward(self,inp):
-        x = self.rep(inp)
+#     def forward(self,inp):
+#         x = self.rep(inp)
 
-        if self.skip is not None:
-            skip = self.skip(inp)
-            skip = self.skipbn(skip)
-        else:
-            skip = inp
+#         if self.skip is not None:
+#             skip = self.skip(inp)
+#             skip = self.skipbn(skip)
+#         else:
+#             skip = inp
 
-        x+=skip
-        return x
+#         x+=skip
+#         return x
 
 
 class XceptionMacro(nn.Module):
@@ -178,7 +178,7 @@ class XceptionMacro(nn.Module):
 
         self.block1=Block(64,128,2,2,start_with_relu=False,grow_first=True)
         self.block2=Block(128,256,2,2,start_with_relu=True,grow_first=True)
-        self.block3=BlockCustom1(256,497,2,2,start_with_relu=True,grow_first=True) #REDEFINE IT
+        self.block3=Block(256,497,2,2,start_with_relu=True,grow_first=True) #REDEFINE IT
 
         self.block4=Block(497,497,3,1,start_with_relu=True,grow_first=True)
         self.block5=Block(497,497,3,1,start_with_relu=True,grow_first=True)
